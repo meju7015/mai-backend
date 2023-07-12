@@ -1,0 +1,12 @@
+GET http://localhost:8000/assets/list
+###
+
+POST http://localhost:8000/assets
+Content-Type: multipart/form-data; boundary=990881634269868846215590
+
+--990881634269868846215590
+Content-Disposition: form-data; name="file" filename="AWS Pricing Calculator.pdf"
+
+< AWS%20Pricing%20Calculator.pdf
+--990881634269868846215590--
+

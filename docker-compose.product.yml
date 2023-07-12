@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  backend:
+    image: mai-backend
+    environment:
+      DATABASE_HOST: 172.26.0.2
+      DATABASE_PORT: 3306
+    ports:
+      - "8000:8000"
+  front:
+    image: mai-fontend
+    ports:
+      - "3000:3000"
+  db:
+    image: mysql:latest
+    volumes:
+      - ./data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mai-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
