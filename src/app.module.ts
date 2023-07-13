@@ -7,15 +7,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { ChatModule } from './api/chat/chat.module';
 import { SseModule } from './modules/sse/sse.module';
+import { AuthModule } from './api/auth/auth.module';
+import { UserModule } from './api/user/user.module';
 import awsS3Config from './config/aws-s3.config';
 import databaseConfig from './config/database.config';
 import pineconeConfig from './config/pinecone.config';
+import googleConfig from './config/google.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [awsS3Config, databaseConfig, pineconeConfig],
+      load: [awsS3Config, databaseConfig, pineconeConfig, googleConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -40,6 +43,8 @@ import pineconeConfig from './config/pinecone.config';
     AssetModule,
     ChatModule,
     SseModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
 })

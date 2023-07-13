@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Sse } from '@nestjs/common';
+import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatRequestDto } from './dto/create-chat-request.dto';
 import { Subject } from 'rxjs';
@@ -14,9 +14,8 @@ export class ChatController {
     private readonly sseService: SseService<string>,
   ) {}
 
-  @Post('stream')
-  @Sse('chat/stream/:namespace')
-  async createChatStream(@Body() createChatRequestDto: CreateChatRequestDto) {
+  @Sse('stream')
+  async createChatStream(@Query() createChatRequestDto: CreateChatRequestDto) {
     const event = await this.chatService.createChatStream(createChatRequestDto);
     return event.sendEvents();
   }

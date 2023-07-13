@@ -11,6 +11,7 @@ import { OpenAI } from 'langchain';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
 import { SseService } from '../../modules/sse/sse.service';
 import { ChatHistory } from './entity/chat-history.entity';
+import { Prompt } from './entity/prompt.entity';
 
 @Injectable()
 export class ChatService {
@@ -19,6 +20,9 @@ export class ChatService {
     private readonly pineconeRepository: Repository<PineconeNamespaces>,
     @InjectRepository(ChatHistory)
     private readonly chatHistoryRepository: Repository<ChatHistory>,
+    @InjectRepository(Prompt)
+    private readonly promptRepository: Repository<Prompt>,
+
     private readonly assetService: AssetService,
     private readonly config: ConfigService,
     private readonly sseService: SseService<string>,
@@ -51,7 +55,7 @@ export class ChatService {
 
     console.log('chain init...');
 
-    const chain = this.makeChain(vectorStore, {
+    const chain = await this.makeChain(vectorStore, {
       temperature: 1,
       modelName: 'gpt-3.5-turbo-16k',
       streaming: true,
@@ -94,7 +98,7 @@ export class ChatService {
 
     console.log('chain init...');
 
-    const chain = this.makeChain(vectorStore, {
+    const chain = await this.makeChain(vectorStore, {
       temperature: 1,
       modelName: 'gpt-3.5-turbo-16k',
       streaming: true,
@@ -117,22 +121,15 @@ export class ChatService {
     return this.sseService;
   }
 
-  private makeChain(vectorStore, openAiOptions) {
+  private async makeChain(vectorStore, openAiOptions) {
     const model = new OpenAI(openAiOptions);
 
-    const CONDENSE_PROMPT = `다음 대화와 후속 질문이 주어지면 다음 질문을 독립혈 질문으로 바꾼다.
-채팅 기록:
-{chat_history}
-다음 질문: {question}
-독립형 질문:`;
+    const prompts = await this.promptRepository.find();
 
-    const QA_PROMPT = `당신은 AI 챗봇이다. 친숙한 인간적인 말투로, 상담원 처럼 행동해줘, 마지막 질문에 답하라
+    console.log(prompts);
 
-{context}
-
-질문: {question}
-언어: 한국어
-답은 마크다운형식으로 만든다`;
+    const CONDENSE_PROMPT = prompts.find((p) => p.id === 1).prompt;
+    const QA_PROMPT = prompts.find((p) => p.id === 2).prompt;
 
     const chain = ConversationalRetrievalQAChain.fromLLM(
       model,
