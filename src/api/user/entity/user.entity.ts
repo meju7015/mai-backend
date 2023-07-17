@@ -3,9 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserSetting } from './user-setting.entity';
+import { UserChatbot } from './user-chatbot.entity';
 
 export interface IUser {
   id: number;
@@ -20,6 +24,14 @@ export interface IUser {
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToOne(() => UserSetting)
+  @JoinColumn({ name: 'user_setting_id' })
+  userSetting: UserSetting;
+
+  @OneToOne(() => UserChatbot)
+  @JoinColumn({ name: 'user_chatbot_id' })
+  userChatbot: UserChatbot;
 
   @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   thirdPartyId: string;

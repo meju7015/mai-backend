@@ -34,6 +34,7 @@ export class AuthService {
       }
 
       const payload = {
+        id: user.id,
         thirdPartyId,
         provider,
       };

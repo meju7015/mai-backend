@@ -40,9 +40,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         jwt,
       };
 
-      console.log('google strategy ::', profile);
-      console.log('user ::', user);
-
       done(null, user);
     } catch (err) {
       done(err, false);
