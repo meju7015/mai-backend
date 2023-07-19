@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.entity';
+import { UserChatbot } from '../../user/entity/user-chatbot.entity';
 
 export enum Models {
   GPT_3_5_TURBO = 'gpt3-5-turbo',
@@ -7,17 +7,19 @@ export enum Models {
 }
 
 @Entity()
-export class UserSetting {
+export class ChatbotSetting {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.userSetting)
-  user: User;
+  @OneToOne(() => UserChatbot, (userChatbot) => userChatbot.setting)
+  chatbot: UserChatbot;
 
   @Column({ type: 'varchar', length: 255 })
   projectName: string;
 
-  @Column({ type: 'text' })
+  @Column({
+    type: 'text',
+  })
   basePrompt: string;
 
   @Column({ type: 'varchar', length: 50 })

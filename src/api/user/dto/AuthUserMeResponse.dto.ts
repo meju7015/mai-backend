@@ -1,5 +1,20 @@
 import { Assets } from '../../asset/entity/asset.entity';
 
+export interface IChatbot {
+  id: string;
+  numberOfCharacters: number;
+  startMessage?: string;
+  suggestedMessage?: string;
+  theme: string;
+  isShowProfile: boolean;
+  displayName: string;
+  userMessageColor: string;
+  isShowUserProfile: boolean;
+  alignment: string;
+  profilePicture?: Assets;
+  userProfilePicture?: Assets;
+}
+
 export class AuthUserMeResponseDto {
   user: {
     id: number;
@@ -8,27 +23,5 @@ export class AuthUserMeResponseDto {
     deletedAt?: Date | null;
   };
 
-  setting: {
-    projectName: string;
-    basePrompt: string;
-    modelName: string;
-    temperature: number;
-    visibility: boolean;
-    domain?: string;
-  };
-
-  chatbot: {
-    id: string;
-    numberOfCharacters: number;
-    startMessage?: string;
-    suggestedMessage?: string;
-    theme: string;
-    isShowProfile: boolean;
-    displayName: string;
-    userMessageColor: string;
-    isShowUserProfile: boolean;
-    alignment: string;
-    profilePicture?: Assets;
-    userProfilePicture?: Assets;
-  };
+  chatbots: IChatbot[];
 }

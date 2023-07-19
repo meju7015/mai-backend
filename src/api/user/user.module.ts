@@ -4,10 +4,9 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { UserChatbot } from './entity/user-chatbot.entity';
-import { UserSetting } from './entity/user-setting.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserChatbot, UserSetting])],
+  imports: [TypeOrmModule.forFeature([User, UserChatbot])],
   controllers: [UserController],
   providers: [UserService],
 })

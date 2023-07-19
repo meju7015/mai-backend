@@ -1,6 +1,14 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { Assets } from '../../asset/entity/asset.entity';
 import { User } from './user.entity';
+import { ChatbotSetting } from '../../chatbot/entity/chatbot-setting.entity';
 
 export enum ChatbotTheme {
   LIGHT = 'light',
@@ -17,8 +25,12 @@ export class UserChatbot {
   @PrimaryColumn({ type: 'varchar' })
   id: string;
 
-  @OneToOne(() => User, (user) => user.userChatbot)
+  @ManyToOne(() => User, (user) => user.userChatbots)
   user: User;
+
+  @OneToOne(() => ChatbotSetting, (chatbotSetting) => chatbotSetting.chatbot)
+  @JoinColumn({ name: 'setting_id' })
+  setting: ChatbotSetting;
 
   @Column({ type: 'int', default: 0 })
   numberOfCharacters: number;

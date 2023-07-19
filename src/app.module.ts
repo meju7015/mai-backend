@@ -9,6 +9,7 @@ import { ChatModule } from './api/chat/chat.module';
 import { SseModule } from './modules/sse/sse.module';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/user/user.module';
+import { ChatbotModule } from './api/chatbot/chatbot.module';
 import awsS3Config from './config/aws-s3.config';
 import databaseConfig from './config/database.config';
 import pineconeConfig from './config/pinecone.config';
@@ -45,6 +46,7 @@ import googleConfig from './config/google.config';
     SseModule,
     AuthModule,
     UserModule,
+    ChatbotModule,
   ],
   controllers: [],
 })

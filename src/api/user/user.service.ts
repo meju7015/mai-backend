@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserSetting } from './entity/user-setting.entity';
 import { UserChatbot } from './entity/user-chatbot.entity';
 import { AuthUserMeResponseDto } from './dto/AuthUserMeResponse.dto';
 
@@ -11,8 +10,6 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(UserSetting)
-    private readonly userSettingRepository: Repository<UserSetting>,
     @InjectRepository(UserChatbot)
     private readonly userChatbotResponseRepository: Repository<UserChatbot>,
   ) {}
@@ -36,12 +33,8 @@ export class UserService {
       loadRelationIds: true,
     });
 
-    const setting = await this.userSettingRepository.findOne({
-      where: { id: user.userSetting.id },
-    });
-
-    const chatbot = await this.userChatbotResponseRepository.findOne({
-      where: { id: user.userChatbot.id },
+    const chatbots = await this.userChatbotResponseRepository.find({
+      where: { user: { id: user.id } },
       relations: ['profilePicture', 'userProfilePicture'],
     });
 
@@ -52,28 +45,20 @@ export class UserService {
         updatedAt: user.updatedAt,
         deletedAt: user.deletedAt,
       },
-      setting: {
-        projectName: setting.projectName,
-        basePrompt: setting.basePrompt,
-        modelName: setting.modelName,
-        temperature: setting.temperature,
-        visibility: setting.visibility,
-        domain: setting.domains,
-      },
-      chatbot: {
-        id: chatbot.id,
-        numberOfCharacters: chatbot.numberOfCharacters,
-        startMessage: chatbot.startMessage,
-        suggestedMessage: chatbot.suggestedMessage,
-        theme: chatbot.theme,
-        isShowProfile: chatbot.isShowProfile,
-        displayName: chatbot.displayName,
-        userMessageColor: chatbot.userMessageColor,
-        isShowUserProfile: chatbot.isShowUserProfile,
-        alignment: chatbot.alignment,
-        profilePicture: chatbot.profilePicture,
-        userProfilePicture: chatbot.userProfilePicture,
-      },
+      chatbots: chatbots.map((c) => ({
+        id: c.id,
+        numberOfCharacters: c.numberOfCharacters,
+        startMessage: c.startMessage,
+        suggestedMessage: c.suggestedMessage,
+        theme: c.theme,
+        isShowProfile: c.isShowProfile,
+        displayName: c.displayName,
+        userMessageColor: c.userMessageColor,
+        isShowUserProfile: c.isShowUserProfile,
+        alignment: c.alignment,
+        profilePicture: c.profilePicture,
+        userProfilePicture: c.userProfilePicture,
+      })),
     };
   }
 }
