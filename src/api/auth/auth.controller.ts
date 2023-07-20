@@ -17,9 +17,9 @@ export class AuthController {
 
     if (user) {
       const query = new URLSearchParams(user);
-      res.redirect(`http://localhost:3000/auth/google-callback?${query}`);
+      res.redirect(`${process.env.FRONT_URL}/auth/google-callback?${query}`);
     } else {
-      res.redirect('http://localhost:3000/auth/google-failure');
+      res.redirect(`${process.env.FRONT_URL}/auth/google-failure`);
     }
   }
 

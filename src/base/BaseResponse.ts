@@ -17,7 +17,7 @@ export class BaseResponse<T> {
     });
   }
 
-  static success<T>(data: T) {
+  static success<T>(data?: T) {
     return new BaseResponse<T>({
       statusCode: 200,
       data,

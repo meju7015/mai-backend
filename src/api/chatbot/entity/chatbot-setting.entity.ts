@@ -2,7 +2,7 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserChatbot } from '../../user/entity/user-chatbot.entity';
 
 export enum Models {
-  GPT_3_5_TURBO = 'gpt3-5-turbo',
+  GPT_3_5_TURBO = 'gpt3.5-turbo',
   GPT_4 = 'gpt-4',
 }
 
@@ -25,7 +25,7 @@ export class ChatbotSetting {
   @Column({ type: 'varchar', length: 50 })
   modelName: Models;
 
-  @Column({ type: 'tinyint', default: 1 })
+  @Column({ type: 'float', default: 1 })
   temperature: number;
 
   @Column({ type: 'boolean', default: false })

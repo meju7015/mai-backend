@@ -16,12 +16,5 @@ export interface IChatbot {
 }
 
 export class AuthUserMeResponseDto {
-  user: {
-    id: number;
-    createdAt: Date;
-    updatedAt?: Date | null;
-    deletedAt?: Date | null;
-  };
-
-  chatbots: IChatbot[];
+  jwt: string;
 }

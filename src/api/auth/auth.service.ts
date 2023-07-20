@@ -40,7 +40,7 @@ export class AuthService {
       };
 
       const jwt: string = sign(payload, this.JWT_SECRET_KEY, {
-        expiresIn: 3600,
+        expiresIn: 36000,
       });
       return jwt;
     } catch (err) {
